@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name" translatable="false">Storage</string>
+    <string name="hello_">Hello everybody!</string>
+    <string name="activity_hello_world" translatable="false">Hello World</string>
+</resources>
