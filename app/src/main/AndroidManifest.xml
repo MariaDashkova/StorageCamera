@@ -13,6 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <service android:name=".StorageService"/>
+
         <activity android:name=".StorageCameraActivity">
 
             <intent-filter>
@@ -21,6 +23,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
 
 
     </application>
