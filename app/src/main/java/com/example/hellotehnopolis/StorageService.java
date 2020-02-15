@@ -6,7 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
+
 import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -25,11 +27,13 @@ public class StorageService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         File app_path = getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DCIM);
-
+        System.out.println(app_path.toString());
         File filepath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
 
         try {
-            File[] pics = getCameraDirectory(filepath);
+
+            File camera = getCameraDirectory(filepath);
+            File[] pics = camera.listFiles();
 
             for (File pic : pics) {
 
@@ -39,7 +43,7 @@ public class StorageService extends IntentService {
                         pic.delete();
 
                         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.cat);
-                        saveBitmap(bitmap, filepath);
+                        saveBitmap(bitmap, camera);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -48,19 +52,21 @@ public class StorageService extends IntentService {
         } catch (NullPointerException e) {
             Log.e("NPE", "Camera dir is upset");
         }
+
+        stopSelf();
     }
 
-    private File[] getCameraDirectory(File dir) {
+    private File getCameraDirectory(File dir) {
         File[] pathFiles = dir.listFiles();
         if (pathFiles != null) {
             for (File f : pathFiles
             ) {
                 if (f.getName().contains("Camera")) {
-                    return f.listFiles();
+                    return f;
                 }
             }
         }
-        return null;
+        return dir;
     }
 
     private void saveBitmap(Bitmap bitmap, File path) {
